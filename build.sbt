@@ -10,35 +10,38 @@ ThisBuild / organization := "silvio.com"
 // Add an external resolver
 //resolvers += Resolver.url("my-test-repo", url("https://silvio.com"))
 
-// add maven loca repo
+// Add a mavel local repo
 resolvers += Resolver.mavenLocal
 
-// custom tasks
-// Refering a custom task
+// Custom Task
+// Referring a custom task
 lazy val printerTask = taskKey[Unit]("Custom Printer Task")
+
 printerTask := {
   val uuid = uuidStringTask.value
   println(s"Generated UUID: $uuid")
 
   val uuidSetting = uuidStringSetting.value
-  println(s"Generated UUID: $uuidSetting")
+  println(s"Configuration getting: $uuidSetting")
 
+  // This line is located in the CustomTaskPrinter.scala file
   CustomTaskPrinter.print()
 }
 
+// This is a task that returns a certain value.
 lazy val uuidStringTask = taskKey[String]("Random UUID generator")
+
 uuidStringTask := {
   StringTask.stringTask()
 }
 
-// custom settings
+// Custom Settings
 lazy val uuidStringSetting = settingKey[String]("Random UUID setting")
 uuidStringSetting := {
-  val uuid = uuidStringTask.value
-  uuid
+  "CONFIGURATION_EXAMPLE_TEST"
 }
 
-// command aliases
+// This is a command ALIASES, can 'ci' invoked in the command line
 addCommandAlias("ci", "compile;test;assembly")
 
 
